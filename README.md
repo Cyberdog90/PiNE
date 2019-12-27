@@ -1,3 +1,3 @@
 # PiNE
 Python Novel Editor  
-Python ver. _**3.8.0b4**_  
+Python ver. _**3.7.3**_  
