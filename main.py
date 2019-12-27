@@ -1,11 +1,23 @@
+# PiNE Ver. 1.0
+
 from kivy.app import App
-from kivy.uix.label import Label
+from kivy.uix.gridlayout import GridLayout
+from kivy.uix.textinput import TextInput
 
 
-class kivy(App):
+class Main(App):
     def build(self):
-        return Label(text="Hello World!!")
+        self.title = "PiNE"
+        return TextField()
+
+
+class TextField(GridLayout):
+    def __init__(self):
+        super(TextField, self).__init__()
+        self.username = TextInput()
+        self.cols = 1
+        self.add_widget(self.username)
 
 
 if __name__ == "__main__":
-    kivy().run()
+    Main().run()
