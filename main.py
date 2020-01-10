@@ -1,4 +1,4 @@
-# PiNE Ver. 0.0
+# PiNE Ver. 2.0
 import tkinter as tk
 
 
