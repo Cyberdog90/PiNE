@@ -4,7 +4,8 @@ import tkinter as tk
 
 def main():
     root = tk.Tk()
-    root.title("test window")
+    root.geometry("1280x720")
+    root.title("PiNE")
     root.iconbitmap("icon.ico")
     root.mainloop()
 
