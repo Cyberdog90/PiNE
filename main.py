@@ -10,6 +10,8 @@ def main():
 
 
 class TextEditor:
+    current_open_file = "no_file"
+
     def __init__(self, master):
         self.master = master
 
@@ -45,11 +47,12 @@ class TextEditor:
     def save_file(self):
         f = fd.asksaveasfile(initialdir="/",
                              mode="w",
-                             # defaultextension=".txt",
                              filetypes=(("テキスト文書", "*.txt"),
                                         ("すべてのファイル", "*.*")))
+
         if f is None:
             return
+
         text2save = self.text_field.get(1.0, tk.END)
         f.write(text2save)
         f.close()
