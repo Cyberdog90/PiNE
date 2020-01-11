@@ -81,7 +81,7 @@ class TextEditor:
             f.write(text2save)
 
     def font_size_increase(self):
-        self.font_size = 49
+        pass
 
 
 if __name__ == "__main__":
