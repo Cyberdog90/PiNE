@@ -1,6 +1,7 @@
 /.idea/
 /venv/
 /hoge/
+/__pycache__/
 /test/
 icon.png
 icon.ico
