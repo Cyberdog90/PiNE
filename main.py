@@ -1,13 +1,15 @@
-# PiNE Ver. 3.1
+# Ahoj Editor Ver. 3.2
 import tkinter as tk
 from tkinter import filedialog as fd
 import os
+from falcon import falcon as falcon
 
 
 def main():
     root = tk.Tk()
     _ = TextEditor(root)
     root.mainloop()
+    print(falcon())
 
 
 class TextEditor:
@@ -28,22 +30,46 @@ class TextEditor:
         self.main_menu = tk.Menu()
         self.master.config(menu=self.main_menu)
 
-        self.file_menu = tk.Menu(self.main_menu)
+        self.file_menu = tk.Menu(self.main_menu, tearoff=0)
         self.main_menu.add_cascade(label="ファイル", menu=self.file_menu)
-        self.file_menu.add_command(label="開く", command=self.open_file)
-        self.file_menu.add_command(label="上書き保存", command=self.overwrite)
+        self.file_menu.add_command(label="開く", command=self.open_file,
+                                   accelerator="Ctrl+O")
+        self.file_menu.add_command(label="上書き保存", command=self.overwrite,
+                                   accelerator="Ctrl+S")
         self.file_menu.add_command(label="名前を付けて保存",
-                                   command=self.save_file)
+                                   command=self.save_file,
+                                   accelerator="Ctrl+Shift+S")
+        self.file_menu.add_command(label="最後に開いたファイルを開く",
+                                   command=self.open_latest_file,
+                                   accelerator="Ctrl+Shift+O")
+        self.file_menu.add_command(label="終了",
+                                   command=self.quit,
+                                   accelerator="Esc")
 
-        self.edit_menu = tk.Menu(self.main_menu)
-        self.main_menu.add_cascade(label="編集", menu=self.edit_menu)
+        self.file_menu.bind_all("<Control-o>", self.open_file)
+        self.file_menu.bind_all("<Shift-Control-S>", self.save_file)
+        self.file_menu.bind_all("<Control-s>", self.overwrite)
+        self.file_menu.bind_all("<Shift-Control-O>", self.open_latest_file)
+        self.file_menu.bind_all("<Escape>", self.quit)
 
-        self.format_menu = tk.Menu(self.main_menu)
-        self.main_menu.add_cascade(label="書式", menu=self.format_menu)
-        self.format_menu.add_command(label="フォントサイズ",
-                                     command=self.font_size_increase)
+    def quit(self, *_):
+        exit(0)
 
-    def overwrite(self):
+    def open_latest_file(self, *_):
+        with open("log.txt", "r") as f:
+            file_name = f.readline()
+            try:
+                with open(file_name, encoding="UTF-8") as file:
+                    for i in file:
+                        self.text_field.insert(tk.END, i)
+            except UnicodeDecodeError:
+                with open(file_name) as file:
+                    for i in file:
+                        self.text_field.insert(tk.END, i)
+
+            self.current_open_file = file_name
+
+    def overwrite(self, *_):
         if self.current_open_file is not None:
             with open(self.current_open_file, "w") as f:
                 text2save = self.text_field.get(1.0, tk.END)
@@ -51,7 +77,7 @@ class TextEditor:
         else:
             self.save_file()
 
-    def open_file(self):
+    def open_file(self, *_):
         file_name = fd.askopenfilename(initialdir=os.getcwd(),
                                        title="開く",
                                        filetypes=(("テキスト文書", "*.txt"),
@@ -67,8 +93,10 @@ class TextEditor:
                     self.text_field.insert(tk.END, i)
 
         self.current_open_file = file_name
+        with open("log.txt", "w") as f:
+            f.write(self.current_open_file)
 
-    def save_file(self):
+    def save_file(self, *_):
         with fd.asksaveasfile(initialdir=os.getcwd(),
                               mode="w",
                               defaultextension=".txt",
@@ -79,9 +107,6 @@ class TextEditor:
 
             text2save = self.text_field.get(1.0, tk.END)
             f.write(text2save)
-
-    def font_size_increase(self):
-        pass
 
 
 if __name__ == "__main__":
