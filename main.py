@@ -58,9 +58,8 @@ class TextEditor:
         self.destroy()
 
     def get_pos(self, *_):
-        pos = self.text_field.index(tk.INSERT)
         text = self.text_field.get("insert linestart", "insert lineend")
-        self.text_field.insert(float(int(float(pos))), "{}\n".format(text))
+        self.text_field.insert("insert linestart", "{}\n".format(text))
 
     def open_check(self):
         text = len(list("".join(self.text_field.get(1.0, tk.END))))
@@ -128,9 +127,17 @@ class TextEditor:
     def command_mode(self, *_):
         text = self.text_field.get("insert linestart", "insert lineend")
         text = text.split()
-        if text[1] == "color":
-            self.text_field.config({"foreground": "{}".format(text[2])})
-            self.text_field.delete("insert linestart", "insert lineend")
+
+        type = text[0]
+        if type == "#":
+            pass
+        elif type == "@":
+            if text[1] == "font":
+                self.text_field.config({"foreground": "{}".format(text[2])})
+                self.text_field.delete("insert linestart", "insert lineend")
+        else:
+            return
+
         if text[1] == "font":
             self.text_field.config({"foreground": "{}".format(text[2])})
             self.text_field.delete("insert linestart", "insert lineend")
