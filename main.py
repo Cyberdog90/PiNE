@@ -38,10 +38,10 @@ class TextEditor:
         self.file_menu.bind_all("<Shift-Control-O>", self.open_latest_file)
         self.file_menu.bind_all("<Escape>", self.quit)
         self.file_menu.bind_all("<Shift-Control-D>", self.get_pos)
-        self.file_menu.bind_all("<Shift-Control-N>", self.color_change)
-        self.file_menu.bind_all("<Shift-Control-M>", self.command_mode)
+        self.file_menu.bind_all("<Shift-Control-N>", self.night_mode)
+        self.file_menu.bind_all("<Shift-Control-C>", self.command_mode)
 
-    def color_change(self, *_):
+    def night_mode(self, *_):
         if self.color:
             self.text_field.config({"background": "Black"})
             self.text_field.config({"foreground": "White"})
@@ -95,8 +95,7 @@ class TextEditor:
         self.open_check()
         file_name = fd.askopenfilename(initialdir=os.getcwd(),
                                        title="開く",
-                                       filetypes=(("テキスト文書", "*.txt"),
-                                                  ("すべてのファイル", "*.*")))
+                                       filetypes=("テキスト文書", "*.txt"))
 
         try:
             with open(file_name, encoding="UTF-8") as file:
@@ -130,6 +129,9 @@ class TextEditor:
         text = self.text_field.get("insert linestart", "insert lineend")
         text = text.split()
         if text[1] == "color":
+            self.text_field.config({"foreground": "{}".format(text[2])})
+            self.text_field.delete("insert linestart", "insert lineend")
+        if text[1] == "font":
             self.text_field.config({"foreground": "{}".format(text[2])})
             self.text_field.delete("insert linestart", "insert lineend")
 
