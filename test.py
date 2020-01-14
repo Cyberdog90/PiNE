@@ -125,9 +125,6 @@ class TextEditor:
             f.write(text2save)
 
 
-class PopUp:
-    def __init__(self):
-
 
 
 if __name__ == "__main__":
