@@ -127,13 +127,11 @@ class TextEditor:
         self.master.destroy()
 
     def command_mode(self, *_):
-        pos = self.text_field.index(tk.INSERT)
         text = self.text_field.get("insert linestart", "insert lineend")
-        try:
-            if list(text)[0] != "@":
-                return
-        except IndexError:
-            return
+        text = text.split()
+        if text[1] == "color":
+            self.text_field.config({"foreground": "{}".format(text[2])})
+            self.text_field.delete("insert linestart", "insert lineend")
 
 
 if __name__ == "__main__":
