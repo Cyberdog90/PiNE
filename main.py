@@ -1,4 +1,4 @@
-# Ahoj Editor Ver. 6.0
+# Ahoj Editor Ver. 7.0
 import tkinter as tk
 from tkinter import filedialog as fd
 import os
@@ -23,7 +23,7 @@ class TextEditor:
         self.font = "MS明朝"
         self.font_size = 18
 
-        self.text_field = tk.Text(font=(self.font, self.font_size))
+        self.text_field = tk.Text(font=(self.font, self.font_size), undo=True)
         self.text_field.pack(fill=tk.BOTH, expand=1)
 
         self.main_menu = tk.Menu()
@@ -36,16 +36,23 @@ class TextEditor:
         self.file_menu.bind_all("<Control-s>", self.overwrite)
         self.file_menu.bind_all("<Shift-Control-O>", self.open_latest_file)
         self.file_menu.bind_all("<Escape>", self.quit)
+        self.file_menu.bind_all("<Shift-Control-D>", self.get_pos)
+        # self.file_menu.bind_all("<Shift-Control-Q>", self.get_text)
 
     def quit(self, *_):
         if self.current_open_file is not None:
             self.overwrite()
         self.open_check()
-
         self.destroy()
 
+    def get_pos(self, *_):
+        pos = self.text_field.index(tk.INSERT)
+        text = self.text_field.get("insert linestart", "insert lineend")
+        self.text_field.insert(float(int(float(pos))), "{}\n".format(text))
+
     def open_check(self):
-        if self.text_field.get(1.0, tk.END) != "\n":
+        text = len(list("".join(self.text_field.get(1.0, tk.END))))
+        if text != 1:
             self.overwrite()
         self.text_field.delete(1.0, tk.END)
 
