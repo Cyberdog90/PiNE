@@ -39,6 +39,7 @@ class TextEditor:
         self.file_menu.bind_all("<Escape>", self.quit)
         self.file_menu.bind_all("<Shift-Control-D>", self.get_pos)
         self.file_menu.bind_all("<Shift-Control-N>", self.color_change)
+        self.file_menu.bind_all("<Shift-Control-M>", self.command_mode)
 
     def color_change(self, *_):
         if self.color:
@@ -124,6 +125,15 @@ class TextEditor:
 
     def destroy(self):
         self.master.destroy()
+
+    def command_mode(self, *_):
+        pos = self.text_field.index(tk.INSERT)
+        text = self.text_field.get("insert linestart", "insert lineend")
+        try:
+            if list(text)[0] != "@":
+                return
+        except IndexError:
+            return
 
 
 if __name__ == "__main__":
