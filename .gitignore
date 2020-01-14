@@ -4,6 +4,8 @@
 /__pycache__/
 /novel/
 /test/
+/data/
+/bin/
 icon.png
 icon.ico
 *.txt
