@@ -1,4 +1,4 @@
-# Ahoj Editor Ver. 7.0
+# Ahoj Editor Ver. Ahoj
 import tkinter as tk
 from tkinter import filedialog as fd
 import os
@@ -18,6 +18,7 @@ class TextEditor:
 
         self.current_open_file = None
         self.flag = True
+        self.color = True
 
         self.master = master
         self.font = "MS明朝"
@@ -37,7 +38,17 @@ class TextEditor:
         self.file_menu.bind_all("<Shift-Control-O>", self.open_latest_file)
         self.file_menu.bind_all("<Escape>", self.quit)
         self.file_menu.bind_all("<Shift-Control-D>", self.get_pos)
-        # self.file_menu.bind_all("<Shift-Control-Q>", self.get_text)
+        self.file_menu.bind_all("<Shift-Control-N>", self.color_change)
+
+    def color_change(self, *_):
+        if self.color:
+            self.text_field.config({"background": "Black"})
+            self.text_field.config({"foreground": "White"})
+            self.color = False
+        else:
+            self.text_field.config({"background": "White"})
+            self.text_field.config({"foreground": "Black"})
+            self.color = True
 
     def quit(self, *_):
         if self.current_open_file is not None:
