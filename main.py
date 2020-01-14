@@ -1,8 +1,11 @@
-# Ahoj Editor Ver. 3.2
+# Ahoj Editor Ver. 5.1
 import tkinter as tk
 from tkinter import filedialog as fd
 import os
 from falcon import falcon as falcon
+from abc import ABCMeta, abstractmethod
+
+class Template()
 
 
 def main():
@@ -15,10 +18,11 @@ def main():
 class TextEditor:
     def __init__(self, master):
         master.geometry("1280x720")
-        master.title("PiNE")
-        master.iconbitmap("icon.ico")
+        master.title("Ahoj Editor")
+        master.iconbitmap("./data/icon.ico")
 
         self.current_open_file = None
+        self.flag = True
 
         self.master = master
         self.font = "MS明朝"
@@ -30,7 +34,7 @@ class TextEditor:
         self.main_menu = tk.Menu()
         self.master.config(menu=self.main_menu)
 
-        self.file_menu = tk.Menu(self.main_menu, tearoff=0)
+        self.file_menu = tk.Menu(self.main_menu, tearoff=False)
         self.main_menu.add_cascade(label="ファイル", menu=self.file_menu)
         self.file_menu.add_command(label="開く", command=self.open_file,
                                    accelerator="Ctrl+O")
@@ -52,10 +56,24 @@ class TextEditor:
         self.file_menu.bind_all("<Shift-Control-O>", self.open_latest_file)
         self.file_menu.bind_all("<Escape>", self.quit)
 
+        self.edit_menu = tk.Menu(self.main_menu, tearoff=False)
+        self.main_menu.add_cascade(label="編集", menu=self.edit_menu)
+        self.edit_menu.add_command(label="置換", command=self.call_popup,
+                                   accelerator="Ctrl+H")
+
+    def replace(self):
+        print(self.text_field.get(1.0, tk.END))
+
     def quit(self, *_):
-        exit(0)
+        self.overwrite()
+        self.destroy()
+
+    def open_check(self):
+        if self.text_field.get(1.0, tk.END) != "\n":
+            self.text_field.delete(1.0, tk.END)
 
     def open_latest_file(self, *_):
+        self.open_check()
         with open("log.txt", "r") as f:
             file_name = f.readline()
             try:
@@ -78,6 +96,7 @@ class TextEditor:
             self.save_file()
 
     def open_file(self, *_):
+        self.open_check()
         file_name = fd.askopenfilename(initialdir=os.getcwd(),
                                        title="開く",
                                        filetypes=(("テキスト文書", "*.txt"),
@@ -107,6 +126,31 @@ class TextEditor:
 
             text2save = self.text_field.get(1.0, tk.END)
             f.write(text2save)
+
+    def call_popup(self):
+        if self.flag:
+            self.flag = False
+            popup = tk.Tk()
+            _ = PopUp(popup)
+            popup.mainloop()
+            self.flag = True
+
+    def destroy(self):
+        self.master.destroy()
+
+
+class PopUp:
+    def __init__(self, master):
+        self.master = master
+        master.geometry("256x144")
+        master.title("Ahoj Replace")
+        master.iconbitmap("./data/icon.ico")
+
+        button = tk.Button(label="des")
+        button.grid(row=2, column=1, columnspan=2)
+
+    def des(self):
+        self.master.destroy()
 
 
 if __name__ == "__main__":
