@@ -19,6 +19,8 @@ class TextEditor:
         self.current_open_file = None
         self.flag = True
         self.color = True
+        self.emergency_call = True
+        self.em_text = ""
 
         self.master = master
         self.font = "MS明朝"
@@ -37,9 +39,10 @@ class TextEditor:
         self.file_menu.bind_all("<Control-s>", self.overwrite)
         self.file_menu.bind_all("<Shift-Control-O>", self.open_latest_file)
         self.file_menu.bind_all("<Escape>", self.quit)
-        self.file_menu.bind_all("<Shift-Control-D>", self.get_pos)
+        self.file_menu.bind_all("<Shift-Control-D>", self.copy_line)
         self.file_menu.bind_all("<Shift-Control-N>", self.night_mode)
         self.file_menu.bind_all("<Shift-Control-C>", self.command_mode)
+        self.file_menu.bind_all("<Shift-Control-E>", self.emergency)
 
     def night_mode(self, *_):
         if self.color:
@@ -57,7 +60,7 @@ class TextEditor:
         self.open_check()
         self.destroy()
 
-    def get_pos(self, *_):
+    def copy_line(self, *_):
         text = self.text_field.get("insert linestart", "insert lineend")
         self.text_field.insert("insert linestart", "{}\n".format(text))
 
@@ -123,6 +126,18 @@ class TextEditor:
 
     def destroy(self):
         self.master.destroy()
+
+    def emergency(self, *_):
+        if self.emergency_call:
+            self.em_text = self.text_field.get(1.0, tk.END)
+            self.text_field.delete(1.0, tk.END)
+            text = "唐澤貴洋殺す" * 2048
+            self.text_field.insert(1.0, text)
+            self.emergency_call = False
+        else:
+            self.text_field.delete(1.0, tk.END)
+            self.text_field.insert(1.0, self.em_text)
+            self.emergency_call = True
 
     def command_mode(self, *_):
         text = self.text_field.get("insert linestart", "insert lineend")
