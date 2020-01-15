@@ -131,7 +131,7 @@ class TextEditor:
         if self.emergency_call:
             self.em_text = self.text_field.get(1.0, tk.END)
             self.text_field.delete(1.0, tk.END)
-            text = "唐澤貴洋殺す" * 2048
+            text = "TEST" * 2048
             self.text_field.insert(1.0, text)
             self.emergency_call = False
         else:
