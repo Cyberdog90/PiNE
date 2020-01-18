@@ -43,6 +43,8 @@ class TextEditor:
         self.file_menu.bind_all("<Shift-Control-N>", self.night_mode)
         self.file_menu.bind_all("<Shift-Control-C>", self.command_mode)
         self.file_menu.bind_all("<Shift-Control-E>", self.emergency)
+        self.file_menu.bind_all("<Control-semicolon>", self.increment)
+        self.file_menu.bind_all("<Control-minus>", self.decrement)
 
     def night_mode(self, *_):
         if self.color:
@@ -138,6 +140,14 @@ class TextEditor:
             self.text_field.delete(1.0, tk.END)
             self.text_field.insert(1.0, self.em_text)
             self.emergency_call = True
+
+    def increment(self, *_):
+        self.font_size += 2
+        self.text_field.config({"font": (self.font, self.font_size)})
+
+    def decrement(self, *_):
+        self.font_size -= 2
+        self.text_field.config({"font": (self.font, self.font_size)})
 
     def command_mode(self, *_):
         text = self.text_field.get("insert linestart", "insert lineend")
