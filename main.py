@@ -96,10 +96,11 @@ class TextEditor:
             self.save_file()
 
     def open_file(self, *_):
-        self.open_check()
+        # self.open_check()
         file_name = fd.askopenfilename(initialdir=os.getcwd(),
                                        title="開く",
-                                       filetypes=("テキスト文書", "*.txt"))
+                                       filetypes=(("テキスト文書", "*.txt"),
+                                                  ("すべてのファイル", "*.*")))
 
         try:
             with open(file_name, encoding="UTF-8") as file:
@@ -150,22 +151,7 @@ class TextEditor:
         self.text_field.config({"font": (self.font, self.font_size)})
 
     def command_mode(self, *_):
-        text = self.text_field.get("insert linestart", "insert lineend")
-        text = text.split()
-
-        type = text[0]
-        if type == "#":
-            pass
-        elif type == "@":
-            if text[1] == "font":
-                self.text_field.config({"foreground": "{}".format(text[2])})
-                self.text_field.delete("insert linestart", "insert lineend")
-        else:
-            return
-
-        if text[1] == "font":
-            self.text_field.config({"foreground": "{}".format(text[2])})
-            self.text_field.delete("insert linestart", "insert lineend")
+        pass
 
 
 if __name__ == "__main__":
