@@ -121,6 +121,7 @@ class TextEditor:
                               defaultextension=".txt",
                               filetypes=(("テキスト文書", "*.txt"),
                                          ("すべてのファイル", "*.*"))) as f:
+            print(f.name)
             if f is None:
                 return
 
