@@ -52,6 +52,8 @@ class TextEditor:
         self.file_menu.bind_all("<Control-semicolon>", self.increment)
         self.file_menu.bind_all("<Control-minus>", self.decrement)
 
+        self.debug()
+
     # bound function
     def open_file(self, *_):
         self.open_check()
@@ -78,7 +80,8 @@ class TextEditor:
                               defaultextension=".txt",
                               filetypes=(("テキスト文書", "*.txt"),
                                          ("すべてのファイル", "*.*"))) as f:
-            print(f.name)
+            self.current_open_file = f.name
+            self.write_log()
             if f is None:
                 return
 
@@ -97,6 +100,7 @@ class TextEditor:
         if self.current_open_file is not None:
             self.overwrite()
         self.open_check()
+        self.debug2()
 
         self.destroy()
 
@@ -167,6 +171,12 @@ class TextEditor:
 
     def destroy(self):
         self.master.destroy()
+
+    def debug(self):
+        print(list(self.text_field.get(1.0, tk.END)))
+
+    def debug2(self):
+        print(list(self.text_field.get(1.0, tk.END)))
 
 
 if __name__ == "__main__":
