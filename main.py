@@ -1,4 +1,4 @@
-# Ahoj Editor Ver. 21.1
+# Ahoj Editor Ver. 22
 import tkinter as tk
 from tkinter import filedialog as fd
 import os
