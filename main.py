@@ -65,6 +65,7 @@ class TextEditor:
 
     def open_latest_file(self, *_):
         self.open_check()
+        if os.path.exists("{}".format(os.getcwd()))
         with open("log.txt", "r") as f:
             file_name = f.readline()
             self.file_open(file_name=file_name)
