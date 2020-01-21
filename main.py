@@ -69,37 +69,6 @@ class TextEditor:
             file_name = f.readline()
             self.file_open(file_name=file_name)
 
-    def night_mode(self, *_):
-        if self.color:
-            self.text_field.config({"background": "Black"})
-            self.text_field.config({"foreground": "White"})
-            self.color = False
-        else:
-            self.text_field.config({"background": "White"})
-            self.text_field.config({"foreground": "Black"})
-            self.color = True
-
-    def quit(self, *_):
-        if self.current_open_file is not None:
-            self.overwrite()
-        self.open_check()
-        self.destroy()
-
-    def delete_line(self, *_):
-        self.text_field.delete("insert linestart", "insert lineend")
-
-    def copy_line(self, *_):
-        text = self.get_text()
-        self.text_field.insert("insert linestart", "{}\n".format(text))
-
-    def overwrite(self, *_):
-        if self.current_open_file is not None:
-            with open(self.current_open_file, "w") as f:
-                text2save = self.text_field.get(1.0, tk.END)
-                f.write(text2save)
-        else:
-            self.save_file()
-
     def save_file(self, *_):
         with fd.asksaveasfile(initialdir=os.getcwd(),
                               mode="w",
@@ -113,8 +82,40 @@ class TextEditor:
             text2save = self.text_field.get(1.0, tk.END)
             f.write(text2save)
 
-    def destroy(self):
-        self.master.destroy()
+    def overwrite(self, *_):
+        if self.current_open_file is not None:
+            with open(self.current_open_file, "w") as f:
+                text2save = self.text_field.get(1.0, tk.END)
+                f.write(text2save)
+        else:
+            self.save_file()
+
+    def quit(self, *_):
+        if self.current_open_file is not None:
+            self.overwrite()
+        self.open_check()
+
+        self.destroy()
+
+    def copy_line(self, *_):
+        text = self.get_text()
+        self.text_field.insert("insert linestart", "{}\n".format(text))
+
+    def delete_line(self, *_):
+        self.text_field.delete("insert linestart", "insert lineend")
+
+    def night_mode(self, *_):
+        if self.color:
+            self.text_field.config({"background": "Black"})
+            self.text_field.config({"foreground": "White"})
+            self.color = False
+        else:
+            self.text_field.config({"background": "White"})
+            self.text_field.config({"foreground": "Black"})
+            self.color = True
+
+    def command_mode(self, *_):
+        pass
 
     def emergency(self, *_):
         if self.emergency_call:
@@ -136,9 +137,6 @@ class TextEditor:
         self.font_size -= 2
         self.text_field.config({"font": (self.font, self.font_size)})
 
-    def command_mode(self, *_):
-        pass
-
     # util function
     def get_text(self):
         return self.text_field.get("insert linestart", "insert lineend")
@@ -159,6 +157,13 @@ class TextEditor:
                 for i in file:
                     self.text_field.insert(tk.END, i)
         self.current_open_file = file_name
+
+    def write_log(self):
+        with open("log.txt", "w") as f:
+            f.write(self.current_open_file)
+
+    def destroy(self):
+        self.master.destroy()
 
 
 if __name__ == "__main__":
