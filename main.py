@@ -65,10 +65,12 @@ class TextEditor:
 
     def open_latest_file(self, *_):
         self.open_check()
-        if os.path.exists("{}".format(os.getcwd()))
-        with open("log.txt", "r") as f:
-            file_name = f.readline()
-            self.file_open(file_name=file_name)
+        if os.path.exists("{}\\log.txt".format(os.getcwd())):
+            with open("log.txt", "r") as f:
+                file_name = f.readline()
+                self.file_open(file_name=file_name)
+        else:
+            self.open_file()
 
     def save_file(self, *_):
         with fd.asksaveasfile(initialdir=os.getcwd(),
