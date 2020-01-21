@@ -52,8 +52,6 @@ class TextEditor:
         self.file_menu.bind_all("<Control-semicolon>", self.increment)
         self.file_menu.bind_all("<Control-minus>", self.decrement)
 
-        self.debug()
-
     # bound function
     def open_file(self, *_):
         self.open_check()
@@ -100,8 +98,6 @@ class TextEditor:
         if self.current_open_file is not None:
             self.overwrite()
         self.open_check()
-        self.debug2()
-
         self.destroy()
 
     def copy_line(self, *_):
@@ -126,9 +122,9 @@ class TextEditor:
 
     def emergency(self, *_):
         if self.emergency_call:
-            self.em_text = self.text_field.get(1.0, tk.END)
+            self.em_text = self.text_field.get(1.0, tk.END)[0:-1]
             self.text_field.delete(1.0, tk.END)
-            text = "TEST" * 2048
+            text = "TEST" * 20
             self.text_field.insert(1.0, text)
             self.emergency_call = False
         else:
@@ -171,12 +167,6 @@ class TextEditor:
 
     def destroy(self):
         self.master.destroy()
-
-    def debug(self):
-        print(list(self.text_field.get(1.0, tk.END)))
-
-    def debug2(self):
-        print(list(self.text_field.get(1.0, tk.END)))
 
 
 if __name__ == "__main__":
